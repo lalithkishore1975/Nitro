@@ -1,88 +1,120 @@
-File Parser CRUD API with Progress Tracking
+1)  File Parser CRUD API with Progress Tracking
 Overview
 
-This project is a backend API that allows users to upload files, parse them, and manage parsed data. It includes CRUD operations for files and their content and also provides a progress tracking system so users can check the status of parsing in real-time.
-
-The main goal of this project is to handle different file types (CSV, PDF, Excel) and extract data without blocking the main thread using asynchronous processing.
+This project is a backend API that allows users to upload files (CSV, Excel, PDF), parse them, and manage their parsed data. It includes CRUD operations for files and extracted content, and a progress tracking system so users can check parsing status in real time.
 
 Features
 
-File upload API (supports CSV, Excel, and PDF)
+* Upload files (CSV, Excel, PDF)
 
-Parse uploaded files and store extracted content
+* Parse data and store in database
 
-Track parsing progress and status (Pending, In Progress, Completed)
+* Track parsing progress (Pending → In Progress → Completed)
 
-CRUD operations for file metadata and parsed data
+* CRUD operations for files
 
-Asynchronous background processing for scalability
+* Asynchronous background parsing
 
 Tech Stack
 
-Framework: FastAPI (Python)
+* Backend Framework: FastAPI (Python)
 
-Database: SQLite (for simplicity) using SQLAlchemy ORM
+* Database: SQLite with SQLAlchemy ORM
 
-Data Validation: Pydantic
+* Validation: Pydantic
 
-File Handling: FastAPI UploadFile
+* File Handling: FastAPI UploadFile
 
-Background Processing: FastAPI BackgroundTasks
+* Background Processing: FastAPI BackgroundTasks
 
-API Endpoints
-Upload a file
-POST /upload
 
-Uploads a file for parsing.
 
-Get progress of a file
-GET /files/{file_id}/progress
 
-Returns the parsing status and progress percentage.
-
-Get all files
-GET /files
-
-Returns all uploaded files with status.
-
-Delete a file
-DELETE /files/{file_id}
-
-Deletes a file and its parsed data.
-
-How Progress Tracking Works
-
-When a file is uploaded, its status is Pending.
-
-A background task starts parsing the file asynchronously.
-
-While parsing, progress (in %) is updated in the database.
-
-Users can check progress using the /files/{file_id}/progress endpoint.
-
-Setup & Run
-
-Clone the project
-
+2)  Setup Instructions
+1. Clone Repository
 git clone <repo-url>
-cd project-folder
+cd <project-folder>
 
-Create and activate virtual environment
-
+2. Create Virtual Environment
 python -m venv venv
-source venv/bin/activate # For Linux/Mac
-venv\Scripts\activate # For Windows
+venv\Scripts\activate
 
-Install dependencies
-
+3. Install Dependencies
 pip install -r requirements.txt
 
-Run the application
-
+4. Run the Server
 uvicorn app.main:app --reload
 
-Access API
 
-Base URL: http://127.0.0.1:8000
+API will run at: http://127.0.0.1:8000
 
-Swagger UI (for testing): /docs
+
+
+
+3)  API Documentation
+1. Upload File
+
+POST /upload
+Upload a file (CSV, Excel, PDF) for parsing.
+Request (multipart/form-data):
+
+file: <your_file>
+
+
+Response:
+
+{
+  "file_id": 1,
+  "filename": "data.csv",
+  "status": "Pending"
+}
+
+2. Get All Files
+
+GET /files
+Returns all uploaded files.
+Response:
+
+[
+  {
+    "file_id": 1,
+    "filename": "data.csv",
+    "status": "Completed"
+  }
+]
+
+3. Get File Progress
+
+GET /files/{file_id}/progress
+Returns parsing progress for a file.
+Response:
+
+{
+  "file_id": 1,
+  "progress": 75,
+  "status": "In Progress"
+}
+
+4. Delete a File
+
+DELETE /files/{file_id}
+Deletes a file and its parsed data.
+Response:
+
+{
+  "message": "File deleted successfully"
+}
+
+Sample Postman Collection
+
+You need to create a Postman collection with the following endpoints:
+
+POST /upload (with file upload)
+
+GET /files
+
+GET /files/{file_id}/progress
+
+DELETE /files/{file_id}
+
+After creating, Export the Postman Collection and add it to the repo as postman_collection.json.
