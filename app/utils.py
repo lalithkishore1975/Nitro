@@ -3,9 +3,7 @@ import json
 from PyPDF2 import PdfReader
 
 def parse_file(file_path: str) -> str:
-    """
-    Parse CSV, Excel, or PDF into structured JSON string.
-    """
+   
     if file_path.endswith(".csv"):
         df = pd.read_csv(file_path)
         return df.to_json(orient="records")
