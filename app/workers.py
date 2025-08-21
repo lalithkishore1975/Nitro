@@ -3,9 +3,7 @@ from sqlalchemy.orm import Session
 from . import crud, utils
 
 def process_file(db: Session, file_id: str, file_path: str):
-    """
-    Simulate background progress + parse file.
-    """
+   
     for i in range(0, 100, 20):
         crud.update_file_status(db, file_id, "processing", i)
         time.sleep(1)
